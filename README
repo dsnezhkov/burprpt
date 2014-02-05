@@ -1,0 +1,47 @@
+
+ This script allows to convert Burp XML report to a useable Text version, reporting on most common fields
+
+ Usage 
+
+ Invocation 
+
+    Ex: ruby ./report_processor.rb ./burp.xml > burp.txt
+
+ Processing:
+
+ Step 0: preparation (optional) You can manipulate what fields you want to report on by toggling true/false on the keys
+ If no guidance is given to the reporter the default is to report all
+
+ Step 1: Scans the Burp XML file, populates the object model
+
+ Step 2 (a):  Generates report with query rules
+ API: burpreportobject.generate_with_rules(how, options{})
+ API: burpreportobject.generate_with_rules(how)
+ Currently the only option is to group the findings by categories (:by_category)
+
+ ----------------- optional/additional --------------------------
+ Step 2 (alternative): Return raw data model, useful for further processing.
+ Format is { issue => [issue location object, ...], issue. }
+ where each issue object will have keys  :name, :severity, :host, :path, :description, :detail, :detailitem, :request, :response, :remediation, :location
+
+ While generate_with_rules allows you to pass in desired properties for a formatted report (or omit them) this method returns raw model, and you can weed out what you do not need on your own.
+
+
+ Installation:
+	This is not converted to a gem yet. Manual dependencies:
+	- you need Ruby 2.0.*
+		Ex.: if using rvm: 
+			$rvm install ruby-2.0.0-p247 
+	- you need Nokogiri gem
+		Ex.: 
+			$gem install nokogiri
+
+Layout:
+	
+├── b_reporter.rb 	# Burp report parser and generator
+├── burp.txt 		# Burp TXT report (out->)
+├── burp.xml 		# Burp XML report (<-in)
+├── README 		# this file
+└── report_processor.rb # report example driver
+
+	
